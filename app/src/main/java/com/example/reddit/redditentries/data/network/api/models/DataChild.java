@@ -5,7 +5,10 @@ package com.example.reddit.redditentries.data.network.api.models;
  */
 
 public class DataChild {
-    private  String title,author,thumbnail;
+    private  String title;
+    private String author;
+    private String date;
+    private String thumbnail;
     private int num_comments;
     private long created_utc;
 
@@ -26,6 +29,14 @@ public class DataChild {
     public void setAuthor(String author) {
 
         this.author = author;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getThumbnail() {
