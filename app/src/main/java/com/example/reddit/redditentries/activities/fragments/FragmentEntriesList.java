@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.reddit.redditentries.data.network.api.ApiInteractor;
 import com.example.reddit.redditentries.data.network.api.models.Children;
@@ -30,8 +32,10 @@ public class FragmentEntriesList extends Fragment
         implements ListItemAdapter.OnItemClickListener {
 
     private Context context;
+    private Fragment fragment;
     private EscuchaFragmento escucha;
     private RecyclerView listRecycler;
+    private ListItemAdapter itemAdapter;
     private ArrayList<Children> childrenList;
     private static DataChild dataChild;
 
@@ -49,6 +53,7 @@ public class FragmentEntriesList extends Fragment
         super.onCreate(savedInstanceState);
 
         context = getContext();
+        fragment = this;
 
         if (getArguments() != null) {
             // Manejo de argumentos
@@ -68,7 +73,7 @@ public class FragmentEntriesList extends Fragment
         interactor.getTop(new ApiInteractor.ResponseCallback() {
             @Override
             public void onDataReady(TopResponse response) {
-                if(response!=null && response.getData()!=null)
+                if(response != null && response.getData() != null)
                     childrenList = response.getData().getChildrenList();
                     fillList();
             }
@@ -79,7 +84,6 @@ public class FragmentEntriesList extends Fragment
             }
         });
 
-
         return v;
     }
 
@@ -88,20 +92,23 @@ public class FragmentEntriesList extends Fragment
         //Reddit uses Strings as ID, so this FOR creates number IDs
         for(int i=0; i<childrenList.size(); i++) {
             childrenList.get(i).getData().setId(i);
+            childrenList.get(i).getData().setViewed(false);
         }
         LinearLayoutManager mLinearManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         listRecycler.setLayoutManager(mLinearManager);
         listRecycler.setHasFixedSize(false);
-        ListItemAdapter itemAdapter = new ListItemAdapter(childrenList, new ListItemAdapter.OnItemClickListener() {
+        itemAdapter = new ListItemAdapter(childrenList, new ListItemAdapter.OnItemClickListener() {
             @Override
             public void onClick(ListItemAdapter.ViewHolder viewHolder, int id) {
                 Log.d("artcl","=>"+childrenList.get(id).getData().getTitle());
                 if (escucha != null) {
                     escucha.alSeleccionarItem(id);
                     dataChild = childrenList.get(id).getData();
+                    childrenList.get(id).getData().setViewed(true);
+                    itemAdapter.notifyDataSetChanged();
                 }
             }
-        }, context);
+        }, context, fragment);
         listRecycler.setAdapter(itemAdapter);
     }
 
@@ -120,15 +127,29 @@ public class FragmentEntriesList extends Fragment
         }
     }
 
+    public void onResume() {
+        super.onResume();
+        if(listRecycler != null && itemAdapter != null) {
+            itemAdapter.notifyDataSetChanged();
+            listRecycler.setAdapter(itemAdapter);
+        }
+    }
+
     @Override
     public void onDetach() {
         super.onDetach();
         escucha = null;
     }
 
+    public void removeItem(int position) {
+        childrenList.remove(position);
+        itemAdapter.notifyDataSetChanged();
+    }
+
     @Override
     public void onClick(ListItemAdapter.ViewHolder viewHolder, int id) {
         loadDetail(id);
+        dataChild.setViewed(true);
     }
 
     public void loadDetail(int id) {

@@ -12,6 +12,7 @@ public class DataChild {
     private String thumbnail;
     private int num_comments;
     private long created_utc;
+    private boolean viewed;
 
     public int getId() {
         return dataChildId;
@@ -75,5 +76,13 @@ public class DataChild {
 
     public void setCreated_utc(long created_utc) {
         this.created_utc = created_utc;
+    }
+    
+    public boolean isViewed() {
+        return viewed;
+    }
+
+    public void setViewed(boolean viewed) {
+        this.viewed = viewed;
     }
 }

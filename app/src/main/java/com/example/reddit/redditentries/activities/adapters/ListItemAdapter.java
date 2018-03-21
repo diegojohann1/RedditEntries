@@ -8,15 +8,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.support.v4.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.example.reddit.redditentries.activities.fragments.FragmentEntriesList;
 import com.example.reddit.redditentries.data.network.api.models.Children;
 import com.example.reddit.redditentries.R;
-import com.example.reddit.redditentries.data.network.api.models.DataChild;
 
 import java.util.ArrayList;
 
 import static android.text.format.DateUtils.getRelativeTimeSpanString;
+import java.util.Calendar;
 
 /**
  * Created by Diego Volantino on 19/3/18.
@@ -29,12 +31,15 @@ import static android.text.format.DateUtils.getRelativeTimeSpanString;
 public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHolder> {
 
     private Context context;
+    private Fragment fragment;
     // private final TopResponseData topResponseData;
     public ArrayList<Children> valores;
 
-    public ListItemAdapter(ArrayList<Children> items, OnItemClickListener escuchaClicksExterna, Context context) {
+    public ListItemAdapter(ArrayList<Children> items, OnItemClickListener escuchaClicksExterna,
+                           Context context, Fragment fragment) {
         valores = items;
         this.escuchaClicksExterna = escuchaClicksExterna;
+        this.fragment = fragment;
         this.context = context;
     }
 
@@ -46,20 +51,31 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        // holder.item = valores.get(position);
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
+        if(valores.get(position).getData().isViewed()) {
+            holder.viewViewed.setVisibility(View.INVISIBLE);
+        } else {
+            holder.viewViewed.setVisibility(View.VISIBLE);
+        }
         holder.tvAuthor.setText(valores.get(position).getData().getAuthor());
         String createdUtc;
-        createdUtc = getRelativeTimeSpanString(valores.get(position).getData().getCreated_utc(),
-                System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS).toString();
+        createdUtc = String.valueOf(DateUtils.getRelativeTimeSpanString(valores.get(position).getData().getCreated_utc(),
+                Calendar.getInstance().getTimeInMillis(), DateUtils.MINUTE_IN_MILLIS));
+        //getRelativeTimeSpanString(valores.get(position).getData().getCreated_utc(),
+        //        System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS).toString();
         holder.tvDate.setText(createdUtc);
         holder.tvTitle.setText(valores.get(position).getData().getTitle());
         Glide.with(holder.itemView.getContext())
-                // .load(holder.item.urlMiniatura)
                 .load(valores.get(position).getData().getThumbnail())
                 .thumbnail(0.1f)
                 .centerCrop()
                 .into(holder.viewMiniatura);
+        holder.btnDismiss.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((FragmentEntriesList) fragment).removeItem(position);
+            }
+        });
         holder.tvComments.setText(String.valueOf(valores.get(position).getData().getNum_comments()) + " "
                 + context.getResources().getString(R.string.comments));
 
