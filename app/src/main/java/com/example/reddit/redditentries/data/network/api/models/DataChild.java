@@ -5,12 +5,21 @@ package com.example.reddit.redditentries.data.network.api.models;
  */
 
 public class DataChild {
-    private  String title;
+    private int dataChildId;
+    private String title;
     private String author;
     private String date;
     private String thumbnail;
     private int num_comments;
     private long created_utc;
+
+    public int getId() {
+        return dataChildId;
+    }
+
+    public void setId(int dataChildId) {
+        this.dataChildId = dataChildId;
+    }
 
     public String getTitle() {
         return title;

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/altura_item"
+    android:orientation="horizontal"
+    android:layout_marginTop="2dp"
+    android:layout_marginBottom="2dp"
+    android:background="@color/black">
+
+    <ImageView
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/viewed"
+        android:background="@color/colorPrimary" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Author"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:id="@+id/author"
+        android:layout_toRightOf="@+id/viewed"
+        android:layout_marginLeft="@dimen/margen_estandar"
+        android:layout_marginRight="@dimen/margen_estandar"
+        android:textSize="17sp"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date"
+        android:id="@+id/date"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/author"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:textSize="15sp"
+        android:textColor="@color/white" />
+
+    <ImageView
+        android:id="@+id/miniatura"
+        android:layout_width="@dimen/ancho_miniatura"
+        android:layout_height="@dimen/ancho_miniatura"
+        android:layout_alignStart="@+id/viewed"
+        android:layout_centerVertical="true" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/miniatura"
+        android:layout_marginBottom="29dp"
+        android:layout_marginLeft="5dp"
+        android:layout_centerVertical="true"
+        android:lines="3"
+        android:text="Title"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:textColor="@color/white" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/btn_dismiss"
+        android:src="@drawable/ic_close_button_icon"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dismiss_post"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:id="@+id/dismiss_post"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/btn_dismiss"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="5dp"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0 Comments"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:id="@+id/comments"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/dismiss_post"
+        android:layout_marginBottom="5dp"
+        android:textColor="@color/ocre" />
+</RelativeLayout>

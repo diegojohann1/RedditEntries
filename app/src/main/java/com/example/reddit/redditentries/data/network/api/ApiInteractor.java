@@ -25,14 +25,14 @@ public class ApiInteractor {
         this.mRedditApi.getTop(MAX_TOP).enqueue(new Callback<TopResponse>() {
             @Override
             public void onResponse(Call<TopResponse> call, Response<TopResponse> response) {
-                Log.v("response",response.body().toString());
+                Log.v("response", response.body().toString());
                 if(cllbk!=null)
                     cllbk.onDataReady(response.body());
             }
 
             @Override
             public void onFailure(Call<TopResponse> call, Throwable t) {
-                Log.e("onFailure","=>"+t.getMessage());
+                Log.e("failure","=>" + t.getMessage());
                 if(cllbk!=null)
                     cllbk.onError(t);
             }
